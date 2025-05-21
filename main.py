@@ -32,5 +32,13 @@ st.title("📘 서울 송파구 고등학교 정보")
 for school_type in ["일반계", "특목고", "자사고"]:
     st.subheader(f"🏫 {school_type} 고등학교")
     filtered = df[df["유형"] == school_type].copy()
-    filtered_display = filtered[["학교명", "성별", "설립", "홈페이지"]].reset_index(drop=True)
+    filtered_display = filtered[["학교명", "성별", "설립"]].reset_index(drop=True)
+
+    # 학교명에 링크를 포함할 수 없으므로, 표는 정적이고 아래에 버튼 제공
     st.dataframe(filtered_display, use_container_width=True)
+
+    if school_type == "자사고":
+        st.markdown("### 🌐 홈페이지 접속")
+        for _, row in filtered.iterrows():
+            st.link_button(f"{row['학교명']} 홈페이지 접속", row['홈페이지'])
+
