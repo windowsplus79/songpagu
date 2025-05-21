@@ -23,18 +23,18 @@ df = pd.DataFrame(school_data)
 
 st.title("📘 서울 송파구 고등학교 정보")
 
-# 유형별로 출력
 for school_type in ["일반계", "특목고", "자사고"]:
     st.subheader(f"🏫 {school_type} 고등학교")
     filtered = df[df["유형"] == school_type].copy()
 
-    # 학교명에 링크 적용
+    # 학교명에 하이퍼링크 추가
     filtered["학교명"] = filtered.apply(
         lambda row: f"[{row['학교명']}]({row['홈페이지']})", axis=1
     )
 
+    # 표 출력 (학교명은 링크, 홈페이지 주소는 그대로 표시)
     st.markdown(
-        filtered[["학교명", "성별", "설립"]]
+        filtered[["학교명", "성별", "설립", "홈페이지"]]
         .reset_index(drop=True)
         .to_markdown(index=False),
         unsafe_allow_html=True
