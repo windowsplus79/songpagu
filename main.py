@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-# 일반계 고등학교 데이터만
+# 데이터
 school_data = [
     {"학교명": "가락고등학교", "성별": "남녀공학", "설립": "공립", "홈페이지": "https://garak.sen.hs.kr"},
     {"학교명": "문현고등학교", "성별": "남녀공학", "설립": "공립", "홈페이지": "https://munhyeon.sen.hs.kr"},
@@ -16,18 +16,33 @@ school_data = [
     {"학교명": "창덕여자고등학교", "성별": "여자", "설립": "사립", "홈페이지": "https://changduk.sen.hs.kr"},
 ]
 
-# DataFrame 생성
 df = pd.DataFrame(school_data)
 
 st.title("🏫 서울 송파구 일반계 고등학교")
 
-# 학교명을 하이퍼링크로 변환
-df["학교명"] = df.apply(
-    lambda row: f"[{row['학교명']}]({row['홈페이지']})", axis=1
-)
+# 학교명 하이퍼링크 HTML 생성
+def make_html_table(df):
+    html = """
+    <table style='width:100%; border-collapse: collapse;' border='1'>
+        <thead>
+            <tr>
+                <th>학교명</th>
+                <th>성별</th>
+                <th>설립</th>
+            </tr>
+        </thead>
+        <tbody>
+    """
+    for _, row in df.iterrows():
+        html += f"""
+            <tr>
+                <td><a href="{row['홈페이지']}" target="_blank">{row['학교명']}</a></td>
+                <td>{row['성별']}</td>
+                <td>{row['설립']}</td>
+            </tr>
+        """
+    html += "</tbody></table>"
+    return html
 
-# 표시할 컬럼 순서
-display_df = df[["학교명", "성별", "설립"]]
-
-# 마크다운 테이블 출력
-st.markdown(display_df.to_markdown(index=False), unsafe_allow_html=True)
+html_table = make_html_table(df)
+st.markdown(html_table, unsafe_allow_html=True)
