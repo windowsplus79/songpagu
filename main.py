@@ -15,10 +15,10 @@ school_data = [
     {"유형": "일반계", "학교명": "영파여자고등학교", "성별": "여자", "설립": "사립", "홈페이지": "https://youngpa.sen.hs.kr"},
     {"유형": "일반계", "학교명": "정신여자고등학교", "성별": "여자", "설립": "사립", "홈페이지": "https://jeongsin.sen.hs.kr"},
     {"유형": "일반계", "학교명": "창덕여자고등학교", "성별": "여자", "설립": "사립", "홈페이지": "https://changduk.sen.hs.kr"},
-    
+
     # 특목고
     {"유형": "특목고", "학교명": "서울체육고등학교", "성별": "남녀공학", "설립": "공립", "홈페이지": "https://seoulsports.sen.hs.kr"},
-    
+
     # 자사고
     {"유형": "자사고", "학교명": "보인고등학교", "성별": "남자", "설립": "사립", "홈페이지": "https://boin.hs.kr"},
 ]
@@ -26,14 +26,11 @@ school_data = [
 # DataFrame 생성
 df = pd.DataFrame(school_data)
 
-st.title("서울 송파구 고등학교 목록")
+st.title("📘 서울 송파구 고등학교 정보")
 
-# 유형별 출력
+# 유형별로 출력
 for school_type in ["일반계", "특목고", "자사고"]:
-    st.header(f"🏫 {school_type} 고등학교")
+    st.subheader(f"🏫 {school_type} 고등학교")
     filtered = df[df["유형"] == school_type].copy()
-    filtered["홈페이지"] = filtered["홈페이지"].apply(lambda url: f"[{url}]({url})")
-    st.write(
-        filtered[["학교명", "성별", "설립", "홈페이지"]].reset_index(drop=True).to_markdown(index=False),
-        unsafe_allow_html=True
-    )
+    filtered_display = filtered[["학교명", "성별", "설립", "홈페이지"]].reset_index(drop=True)
+    st.dataframe(filtered_display, use_container_width=True)
